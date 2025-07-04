@@ -1,0 +1,44 @@
+run_type = "staged_learning"
+device = "cpu"
+[[stage]]
+chkpt_file = "agents\\agent_8773276f865c49499752f0da11b9fbcd.prior"
+termination = "simple"
+max_score = 0.6
+min_steps = 5
+max_steps = 5
+
+[stage.scoring]
+type = "geometric_mean"
+[[stage.scoring.component]]
+
+[stage.scoring.component.MolecularWeight]
+comment = "Drug-like MW range"
+[[stage.scoring.component.MolecularWeight.endpoint]]
+name = "Molecular weight"
+weight = 0.34
+
+[stage.scoring.component.MolecularWeight.endpoint.transform]
+type = "double_sigmoid"
+low = 200.0
+high = 500.0
+coef_div = 500.0
+coef_si = 20.0
+coef_se = 20.0
+
+[parameters]
+summary_csv_prefix = "staged_learning_b63b9faca17843a39310b5ce424f56ee"
+batch_size = 64
+randomize_smiles = true
+unique_sequences = true
+prior_file = "backend/priors/reinvent.prior"
+agent_file = "agents\\agent_31274d00ebdb429a978e2578cc349223.prior"
+
+[learning_strategy]
+type = "dap"
+sigma = 128
+rate = 0.0001
+
+[diversity_filter]
+type = "IdenticalMurckoScaffold"
+bucket_size = 25
+minscore = 0.4

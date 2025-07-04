@@ -1,0 +1,92 @@
+run_type = "staged_learning"
+device = "cpu"
+[[stage]]
+chkpt_file = "56354c2987eb406689a99529f1ad09ef.model"
+termination = "simple"
+max_score = 0.6
+min_steps = 3
+max_steps = 5
+
+[stage.scoring]
+type = "geometric_mean"
+[[stage.scoring.component]]
+
+[stage.scoring.component.MolecularWeight]
+comment = "Drug-like MW range"
+[[stage.scoring.component.MolecularWeight.endpoint]]
+name = "Molecular weight"
+weight = 0.34
+
+[stage.scoring.component.MolecularWeight.endpoint.transform]
+type = "double_sigmoid"
+low = 200.0
+high = 500.0
+coef_div = 500.0
+coef_si = 20.0
+coef_se = 20.0
+[[stage]]
+chkpt_file = "726d040cdf254b35934fde297cf6a06f.model"
+termination = "simple"
+max_score = 0.6
+min_steps = 3
+max_steps = 5
+
+[stage.scoring]
+type = "geometric_mean"
+[[stage.scoring.component]]
+
+[stage.scoring.component.MolecularWeight]
+comment = "Drug-like MW range"
+[[stage.scoring.component.MolecularWeight.endpoint]]
+name = "Molecular weight"
+weight = 0.34
+
+[stage.scoring.component.MolecularWeight.endpoint.transform]
+type = "double_sigmoid"
+low = 200.0
+high = 500.0
+coef_div = 500.0
+coef_si = 20.0
+coef_se = 20.0
+[[stage]]
+chkpt_file = "agents\\agent_60a4de30e31c485d8c6d8352f008a190.prior"
+termination = "simple"
+max_score = 0.6
+min_steps = 3
+max_steps = 5
+
+[stage.scoring]
+type = "geometric_mean"
+[[stage.scoring.component]]
+
+[stage.scoring.component.MolecularWeight]
+comment = "Drug-like MW range"
+[[stage.scoring.component.MolecularWeight.endpoint]]
+name = "Molecular weight"
+weight = 0.34
+
+[stage.scoring.component.MolecularWeight.endpoint.transform]
+type = "double_sigmoid"
+low = 200.0
+high = 500.0
+coef_div = 500.0
+coef_si = 20.0
+coef_se = 20.0
+
+[parameters]
+summary_csv_prefix = "staged_learning_23c1fbaa18044677acd7c6d3561925a8"
+batch_size = 64
+randomize_smiles = true
+unique_sequences = true
+prior_file = "backend/priors/reinvent.prior"
+agent_file = "agents\\agent_b659d742d1ba418b979c4d3a0c4e37f3.prior"
+
+[learning_strategy]
+type = "dap"
+sigma = 128
+rate = 0.0001
+
+[diversity_filter]
+type = "IdenticalMurckoScaffold"
+bucket_size = 25
+minscore = 0.4

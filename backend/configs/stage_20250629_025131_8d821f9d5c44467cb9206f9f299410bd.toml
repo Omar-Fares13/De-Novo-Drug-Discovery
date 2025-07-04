@@ -1,0 +1,44 @@
+run_type = "staged_learning"
+device = "cpu"
+[[stage]]
+chkpt_file = "56354c2987eb406689a99529f1ad09ef.model"
+termination = "simple"
+max_score = 0.6
+min_steps = 3
+max_steps = 5
+
+[stage.scoring]
+type = "geometric_mean"
+[[stage.scoring.component]]
+
+[stage.scoring.component.MolecularWeight]
+comment = "Drug-like MW range"
+[[stage.scoring.component.MolecularWeight.endpoint]]
+name = "Molecular weight"
+weight = 0.34
+
+[stage.scoring.component.MolecularWeight.endpoint.transform]
+type = "double_sigmoid"
+low = 200.0
+high = 500.0
+coef_div = 500.0
+coef_si = 20.0
+coef_se = 20.0
+
+[parameters]
+summary_csv_prefix = "staged_learning_9e9913f36f4e42ef9b85b3ae40b77782"
+batch_size = 64
+randomize_smiles = true
+unique_sequences = true
+prior_file = "backend/priors/libinvent.prior"
+agent_file = "backend\\uploads\\prior_1_lol\\lol.model"
+
+[learning_strategy]
+type = "dap"
+sigma = 128
+rate = 0.0001
+
+[diversity_filter]
+type = "IdenticalMurckoScaffold"
+bucket_size = 25
+minscore = 0.4
